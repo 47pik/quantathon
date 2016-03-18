@@ -30,8 +30,8 @@ def get_data():
     
     stock_dict is a dictionary where the values are these 6 column tables
     described above. The keys are 's0', 's1'...'s99'.'''
-    #os.chdir('C:\Users\47pik\Documents\GitHub\quantathon\data')
-    rdr = csv.reader(open('data\in_sample_data.csv', 'r'))
+    #os.chdir('C:\Users\47pik\Documents\GitHub\quantathon\')
+    rdr = csv.reader(open(os.path.join('data', 'in_sample_data.csv'), 'r'))
     x=list(rdr)
     dat=np.array(x).astype('float')
     nums = np.zeros((T, 1))
