@@ -29,7 +29,8 @@ def get_data():
     closing price (SC), trading volume (TVL), trade direction indicator (IND).
     
     stock_dict is a dictionary where the values are these 6 column tables
-    described above. The keys are 's0', 's1'...'s99'.'''
+    described above. The keys are 's0', 's1'...'s99'. The final column is the
+    date in int format (0,1,2, ... 1002).'''
     #os.chdir('C:\Users\47pik\Documents\GitHub\quantathon\')
     rdr = csv.reader(open(os.path.join('data', 'in_sample_data.csv'), 'r'))
     x=list(rdr)
@@ -42,7 +43,7 @@ def get_data():
     stock_dict = {}
     for i in range(N):
         stock_name = 's' + str(i)
-        stock_table = dat[:,i * 6 + 1: i * 6 + 6 + 1].copy()
+        stock_table = dat[:,range(i * 6 + 1, i * 6 + 6 + 1 + 1) + [-1]].copy()
         stock_dict[stock_name] = stock_table
         
     return dat, stock_dict
