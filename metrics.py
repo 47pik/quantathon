@@ -75,7 +75,7 @@ def AvrROC(t):
 def ROO(t, j):
     '''Return open-to-open return of stock j on day t'''
     if (t, j) in ROOd: return ROOd[(t, j)]
-    res = (SO(t, j) / float(SO(t, j))) - 1
+    res = (SO(t, j) / float(SO(t-1, j))) - 1
     ROOd[(t, j)] = res
     return res
 
