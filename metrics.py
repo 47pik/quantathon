@@ -126,6 +126,28 @@ def W2(t, j):
     W2d[(t, j)] = terms
     return terms
 
+def W2p(t, j):
+    '''Returns weights for stock j on day t for Part 2'''
+    if (t, j) in W2d: return W2d[(t, j)]
+
+    n = float(rd.N)
+    relative_tvl = TVL(t-1,j) / float(AvrTVL(t-1,j))
+    relative_rvp = RVP(t-1,j) / float(AvrRVP(t-1,j))
+    
+    terms = [0, 0, 0]
+    rcc = (RCC(t-1,j) - AvrRCC(t-1))
+    roo = (ROO(t,j) - AvrROO(t))
+    roc = (ROC(t-1,j) - AvrROC(t-1))
+    rco = (RCO(t,j) - AvrRCO(t))
+    r_avg = (rcc + roo + roc + rco) / 4
+    terms[0] = r_avg
+    terms[1] = relative_tvl * r_avg
+    terms[2] = relative_rvp * r_avg
+    terms = np.array([x / n for x in terms])
+    
+    W2d[(t, j)] = terms
+    return terms
+
 def W2_wrapper(t,j, parameters):
     terms = W2(t, j)
     product = parameters * terms
@@ -141,7 +163,7 @@ def RP2(t, parameters):
 def sharpe(parameters):
     rfn = RP2
     rps = [rfn(t, parameters) for t in range(2, rd.T)]
-    return np.mean(rps) / np.std(rps)
+    return -np.mean(rps) / np.std(rps)
     
 
 #Part 3
@@ -227,3 +249,6 @@ def IND(t, j):
     indicator = stock_data[t][6]
     INDd[(t, j)] = indicator
     return indicator
+
+if __name__ == '__main__':
+    st = time.time(); sharpe(parameters); end = time.time(); print(end - st)
