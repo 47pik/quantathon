@@ -1,7 +1,3 @@
-import numpy as np
-from metrics import *
-import time
-import sys
 import matplotlib.pyplot as plt
 import output as op
 import observations as ob
@@ -40,5 +36,6 @@ if __name__ == '__main__':
             row += [99 for j in rd.stock_dict]
         map(str, row)
         data_matrix.append(row)
-        
+
     op.generate_csv('data_part1.team_B.csv', data_matrix)
+

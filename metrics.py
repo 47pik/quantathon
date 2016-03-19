@@ -1,6 +1,10 @@
 import numpy as np
 import read_data as rd
 import time
+from collections import Counter
+from sklearn import linear_model as lm
+import scipy.stats as ss
+import sys
 
 #Caches
 SOd = {}; SHd = {}; SLd = {}; SCd = {}; TVLd = {}; AvrTVLd = {}; INDd = {}
@@ -9,6 +13,7 @@ W2d = {}; RCOd = {}; ROCd = {}; ROOd = {}; RVPd = {}; RP2d = {}
 AvrRCOd = {}; AvrROCd= {}; AvrROOd = {}; AvrRVPd = {}
 W3d = {}; FILL3d = {};  RP3d = {}
 W4d = {}; FILL4d = {}; RP4d = {}
+ret10d = {}; lowd = {}; highd = {}; ressupd = {}; movavgd = {}
 
 
 #Part 1
@@ -192,16 +197,87 @@ def RP3(t, parameters):
 #Part 4
 def W4(t, j):
     '''Returns weights for stock j on day t for Part 4'''
-    pass
+    if (t, j) in W4d: return W4d[(t,j)]
+    #res =  ret10(t, j)
+    #if TVL(t - 1, j) > AvrTVL(t - 1, j) * 1.5:
+        #res = -ret10(t - 1, j)
+    #else:
+        #res = 0
+    res = ressup(t, j)
+    W4d[(t,j)] = res
+    return res
     
+
+def ret10(t, j):
+    if (t, j) in ret10d: return ret10d[(t,j)]
+    res = np.prod([1 + RCC(i, j) for i in range(t-1)])/ \
+        np.prod([1 + AvrRCC(i) for i in range(t-1)])- 1
+    ret10d[(t,j)] = res
+    return res
+
+def ressup(t, j):
+    alpha = 0.01; beta = 1
+    if (t, j) in ressupd: return ressupd[(t, j)]
+    L = low(t, j); H = high(t, j)
+    pr = SC(t - 1, j)
+    if pr < ((1 + alpha) * L):
+        res = beta
+    elif pr > ((1 - alpha) * H):
+        res = -beta
+    else:
+        res = 0
+    ressupd[(t, j)] = res
+    return res
+    
+def low(t, j):
+    if (t, j) in lowd: return lowd[(t, j)]
+    L = min([SL(i, j) for i in range(max(1, t-200), t+1)])
+    lowd[(t, j)] = L
+    return L
+    
+def high(t, j):
+    if (t, j) in highd: return highd[(t, j)]
+    H = max([SH(i, j) for i in range(max(1, t-200), t+1)])
+    highd[(t, j)] = H
+    return H    
+
+def movavg(t, j):
+    '''Returns moving average for stock j for 200 days prior to day t'''
+    if (t, j) in movavgd: return movavgd[(t, j)]
+    longavg = np.mean([SC(i, j) for i in range(max(1, t-100), t+1)])
+    if SC(t - 1, j) > longavg:
+        res = SC(t - 1, j)
+    else:
+        res = -SC(t - 1, j)
+    movavgd[(t, j)] = res
+    return res    
+
 def FILL4(t, j):
     '''Returns 1 if stock j on day t is able to be filled on according to W4, 0 otherwise'''
-    pass
+    if (t, j) in FILL4d: return FILL4d[(t, j)]
+    if (W4(t, j) * IND(t, j)) >= 0:
+        res = 1
+    else:
+        res = 0
+    FILL4d[(t,j)] = res
+    return res
 
-def RP4(t, j):
+def RP4(t):
     '''Returns open-to-close portfolio for day t taking fill conditions into account'''
-    pass
-
+    w = [W4(t, j) for j in rd.stock_dict]
+    fills = [FILL4(t, j) for j in rd.stock_dict]
+    rocs = [ROC(t, j) for j in rd.stock_dict]
+    
+    term = np.array(w) * np.array(fills)
+    denom = sum(map(abs, term))
+    if denom == 0:
+        res = 0
+    else:
+        res = sum(term * rocs) / sum(map(abs, term))
+    return res
+    
+def sharpe2(rps):
+    return -np.mean(rps) / np.std(rps)
     
 #Utility
 def SO(t, j):
@@ -261,8 +337,41 @@ def IND(t, j):
 
 if __name__ == '__main__':
     parameters = [10,2,3,4,5,6,7,8,1,2,3,4]
-    st = time.time(); s = sharpe(parameters); end = time.time(); print(end - st)
-    mnROO = [np.mean([ROO(t,j) for j in rd.stock_dict]) for t in range(rd.T)]
-    mnRCC = [np.mean([RCC(t,j) for j in rd.stock_dict]) for t in range(rd.T)]
-    mnROC = [np.mean([ROC(t,j) for j in rd.stock_dict]) for t in range(rd.T)]
-    mnRCO = [np.mean([RCO(t,j) for j in rd.stock_dict]) for t in range(rd.T)]
+    #st = time.time(); s = sharpe(parameters); end = time.time(); print(end - st)
+    #mnROO = [np.mean([ROO(t,j) for j in rd.stock_dict]) for t in range(rd.T)]
+    #mnRCC = [np.mean([RCC(t,j) for j in rd.stock_dict]) for t in range(rd.T)]
+    #mnROC = [np.mean([ROC(t,j) for j in rd.stock_dict]) for t in range(rd.T)]
+    #mnRCO = [np.mean([RCO(t,j) for j in rd.stock_dict]) for t in range(rd.T)]
+    
+    rp4s = [RP4(t) for t in range(11, rd.T)]
+    sys.exit()
+    i10 = {}
+    cd = {}
+    j = 's6'
+    for j in rd.stock_dict:
+        #r10 = [ret10(t, j) for t in range(11, rd.T)]
+        ind = np.reshape(rd.stock_dict[j][:,6], (1003, 1))
+        #ind10 = ind[11:,:]
+        #pos10i = filter(lambda i: r10[i] > 0, range(rd.T - 11))
+        #pos10 = [int(ind10[i]) for i in pos10i]
+        ##print(Counter(pos10))
+        #neg10i = filter(lambda i: r10[i] < 0, range(rd.T - 11))
+        #neg10 = [int(ind10[i]) for i in neg10i]
+        ##print(Counter(neg10))  
+        #i10[j] = (Counter(pos10), Counter(neg10))
+        roc = np.reshape(np.array([ROC(t, j) for t in range(rd.T)]), (1003, 1))
+        #l = lm.LinearRegression()
+        #l.fit(roc, ind)
+        x = ss.linregress(np.transpose(roc)[0], np.transpose(ind)[0])
+              
+        cd[j] = x
+        
+        coefs = [cd[j].slope for j in cd]
+        errs = [cd[j].stderr for j in cd]
+        np.median(coefs)
+        np.median(errs)
+        pv = [cd[j].pvalue for j in cd]
+        np.median(pv)        
+        pvi = [(i, pv[i]) for i in range(100)]
+        spvi = sorted(pvi, key=lambda x:x[1]) 
+        sigcoefs = [[x[0], x[1], coefs[x[0]]] for x in spvi[:23]]
