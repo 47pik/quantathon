@@ -47,3 +47,5 @@ def get_data():
         stock_dict[stock_name] = stock_table
         
     return dat, stock_dict
+
+dat, stock_dict = get_data()
