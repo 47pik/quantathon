@@ -137,9 +137,9 @@ def W2p(t, j):
     terms = [0, 0, 0]
     rcc = (RCC(t-1,j) - AvrRCC(t-1))
     roo = (ROO(t,j) - AvrROO(t))
-    #roc = (ROC(t-1,j) - AvrROC(t-1))
-    rco = (RCO(t,j) - AvrRCO(t))
-    r_avg = (rcc + roo + rco) / 3
+    roc = (ROC(t-1,j) - AvrROC(t-1))
+    #rco = (RCO(t,j) - AvrRCO(t))
+    r_avg = (rcc + roo + roc) / 3
     terms[0] = r_avg
     terms[1] = relative_tvl * r_avg
     terms[2] = relative_rvp * r_avg
