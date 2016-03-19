@@ -9,6 +9,7 @@ def ts_return(r_fn):
         ret_pf.append(rp)
     return ret_pf
 
+#check indicies
 def ts_cum_return(r_fn):
     '''Return list representing the time-series of cumulative long-short return'''
     cumR = [99, 99]
@@ -43,9 +44,9 @@ def ts_portfolio_dir(w_fn, fill_fn=None):
         if fill_fn:
             fills = np.array([fill_fn(t, j) for j in rd.stock_dict])
             weights = weights * fills
-        
+    
         abs_weights = map(abs, weights)
-        port_dir.append(sum(weights) / sum(abs_weights))
+        port_dir.append(round(sum(weights), 15) / sum(abs_weights))
         
     return port_dir
         

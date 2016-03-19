@@ -29,7 +29,7 @@ def RCC(t, j):
     '''Returns close-to-close return of stock j on day t'''
     if (t, j) in RCCd: return RCCd[(t,j)]
     res =(SC(t,j)/SC(t-1, j)) - 1
-    RCCd[t] = res
+    RCCd[(t, j)] = res
     return res
 
 def W1(t,j):
