@@ -29,7 +29,7 @@ def RCC(t, j):
     '''Returns close-to-close return of stock j on day t'''
     if (t, j) in RCCd: return RCCd[(t,j)]
     res =(SC(t,j)/SC(t-1, j)) - 1
-    RCCd[t] = res
+    RCCd[(t, j)] = res
     return res
 
 def W1(t,j):
@@ -158,9 +158,17 @@ def W2_wrapper(t,j, parameters):
     product = parameters * terms
     return np.sum(product)    
 
+def W2p_wrapper(t,j, parameters):
+    terms = W2p(t, j)
+    product = parameters * terms
+    return np.sum(product)  
+
 def RP2(t, parameters):
     '''Returns open-to-close portfolio for day t'''
-    w = [W2_wrapper(t, j, parameters)  for j in rd.stock_dict]
+    if len(parameters) == 12:
+        w = [W2_wrapper(t, j, parameters)  for j in rd.stock_dict]
+    else:
+        w = [W2p_wrapper(t, j, parameters)  for j in rd.stock_dict]
     rocs = [ROC(t, j) for j in rd.stock_dict]
     res = np.dot(w, rocs) / sum(map(abs, w))
     return res
@@ -185,7 +193,10 @@ def FILL3(t, j, parameters):
 
 def RP3(t, parameters):
     '''Returns open-to-close portfolio for day t taking fill conditions into account'''
-    w = [W2_wrapper(t, j, parameters) for j in rd.stock_dict]
+    if len(parameters) == 12:
+        w = [W2_wrapper(t, j, parameters) for j in rd.stock_dict]
+    else:
+        w = [W2p_wrapper(t, j, parameters) for j in rd.stock_dict]
     fills = [FILL3(t, j, parameters) for j in rd.stock_dict]
     rocs = [ROC(t, j) for j in rd.stock_dict]
     
@@ -346,8 +357,8 @@ def IND(t, j):
 
 if __name__ == '__main__':
     #parameters = [10,2,3,4,5,6,7,8,1,2,3,4]
-    #params = [-0.11812008, -3.05744312,  3.798748,   -2.05990281,  0.39163579,  3.8577401,\
-              #-4.32966829, -3.93373867, -0.46817134, -2.17563513,  2.48775916,  2.48504554]   
+    params = [-0.11812008, -3.05744312,  3.798748,   -2.05990281,  0.39163579,  3.8577401,\
+              -4.32966829, -3.93373867, -0.46817134, -2.17563513,  2.48775916,  2.48504554]   
 
     st = time.time(); s = sharpe3(params); end = time.time(); print(end - st)
     #mnROO = [np.mean([ROO(t,j) for j in rd.stock_dict]) for t in range(rd.T)]

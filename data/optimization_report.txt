@@ -1,0 +1,30 @@
+Our optimized 12-parameters are:
+    params = [-0.11812008, -3.05744312,  3.798748,   -2.05990281,  0.39163579,  3.8577401,\
+              -4.32966829, -3.93373867, -0.46817134, -2.17563513,  2.48775916,  2.48504554]
+
+Our starting point for these was:
+(-0.125, -0.125, -0.125, -0.125, 0.005625, 0.005625, 0.005625, 0.005625, 0.006875000000000001, 0.006875000000000001, 0.006875000000000001, 0.006875000000000001)
+
+We set our a1 weights at 2**k, for k = -5...5. The resulting optimizations yielded the following negative Sharpe ratios:
+-0.437963358277
+-0.440511485353
+-0.440950758314
+-0.442166069528
+-0.441332412222
+-0.440420767592
+-0.437136222816
+-0.424998825737
+-0.418415363682
+-0.413110300245
+-0.404942533471
+
+There's a peak here at 2** -2, but we chose another since the resulting coefficients were smaller.
+
+These parameters get a 0.440950758314 Sharpe ratio. Their starting point got 0.15931645235569056.
+Including the INDs, they get a 0.064784872847161015 ratio, and their starting point gets 0.033414734359919554.
+
+Our optimal parameters were reached after 100 iterations. We got even further, but they didn't look as nice. It's shown below - the coefficients were larger and the gain was only to .44279693753.
+
+[ -0.14017089 -10.7714376   11.30675988   7.50040931   0.25822643
+   2.58069292  -2.88504362  -2.57650906  -0.30956843  -0.06588881
+   0.26922478   0.20417341]
