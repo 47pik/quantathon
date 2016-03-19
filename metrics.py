@@ -149,7 +149,7 @@ def W2p(t, j):
     return terms
 
 def W2_wrapper(t,j, parameters):
-    terms = W2p(t, j)
+    terms = W2(t, j)
     product = parameters * terms
     return np.sum(product)    
 
@@ -167,19 +167,28 @@ def sharpe(parameters):
     
 
 #Part 3
-def W3(t, j):
-    '''Returns weights for stock j on day t for Part 3'''
-    pass
 
-def FILL3(t, j):
+def FILL3(t, j, parameters):
     '''Returns 1 if stock j on day t is able to be filled on according to W3, 0 otherwise'''
-    pass
+    if (W2_wrapper(t, j, parameters) * IND(t, j)) >= 0:
+        return 1
+    else:
+        return 0
 
-def RP3(t):
+def RP3(t, parameters):
     '''Returns open-to-close portfolio for day t taking fill conditions into account'''
-    pass
-
-
+    w = [W2_wrapper(t, j, parameters) for j in rd.stock_dict]
+    fills = [FILL3(t, j, parameters) for j in rd.stock_dict]
+    rocs = [ROC(t, j) for j in rd.stock_dict]
+    
+    term = w * fills
+    denom = sum(map(abs, term))
+    if denom == 0:
+        res = 0
+    else:
+        res = sum(term * rocs) / sum(map(abs, term))
+    return res
+    
 #Part 4
 def W4(t, j):
     '''Returns weights for stock j on day t for Part 4'''
