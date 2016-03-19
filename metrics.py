@@ -2,7 +2,7 @@ import numpy as np
 import read_data as rd
 import time
 from collections import Counter
-from sklearn import linear_model as lm
+#from sklearn import linear_model as lm
 import scipy.stats as ss
 import sys
 
@@ -165,7 +165,7 @@ def RP2(t, parameters):
     res = np.dot(w, rocs) / sum(map(abs, w))
     return res
 
-def sharpe(parameters):
+def sharpe2(parameters):
     rfn = RP2
     rps = [rfn(t, parameters) for t in range(2, rd.T)]
     return -np.mean(rps) / np.std(rps)
@@ -175,10 +175,13 @@ def sharpe(parameters):
 
 def FILL3(t, j, parameters):
     '''Returns 1 if stock j on day t is able to be filled on according to W3, 0 otherwise'''
+    if (t, j) in FILL3d: return FILL3d[(t, j)]
     if (W2_wrapper(t, j, parameters) * IND(t, j)) >= 0:
-        return 1
+        res = 1
     else:
-        return 0
+        res = 0
+    FILL3d[(t, j)] = res
+    return res
 
 def RP3(t, parameters):
     '''Returns open-to-close portfolio for day t taking fill conditions into account'''
@@ -186,13 +189,19 @@ def RP3(t, parameters):
     fills = [FILL3(t, j, parameters) for j in rd.stock_dict]
     rocs = [ROC(t, j) for j in rd.stock_dict]
     
-    term = w * fills
+    term = np.array(w) * np.array(fills)
     denom = sum(map(abs, term))
     if denom == 0:
         res = 0
     else:
         res = sum(term * rocs) / sum(map(abs, term))
     return res
+
+def sharpe3(parameters):
+    rfn = RP3
+    rps = [rfn(t, parameters) for t in range(2, rd.T)]
+    return -np.mean(rps) / np.std(rps)
+    
     
 #Part 4
 def W4(t, j):
@@ -219,7 +228,7 @@ def ressup(t, j):
     alpha = 0.01; beta = 1
     if (t, j) in ressupd: return ressupd[(t, j)]
     L = low(t, j); H = high(t, j)
-    pr = SC(t - 1, j)
+    pr = SO(t, j)
     if pr < ((1 + alpha) * L):
         res = beta
     elif pr > ((1 - alpha) * H):
@@ -237,14 +246,14 @@ def low(t, j):
     
 def high(t, j):
     if (t, j) in highd: return highd[(t, j)]
-    H = max([SH(i, j) for i in range(max(1, t-200), t+1)])
+    H = max([SH(i, j) for i in range(max(1, t-20), t+1)])
     highd[(t, j)] = H
     return H    
 
 def movavg(t, j):
     '''Returns moving average for stock j for 200 days prior to day t'''
     if (t, j) in movavgd: return movavgd[(t, j)]
-    longavg = np.mean([SC(i, j) for i in range(max(1, t-100), t+1)])
+    longavg = np.mean([SC(i, j) for i in range(max(1, t-200), t+1)])
     if SC(t - 1, j) > longavg:
         res = SC(t - 1, j)
     else:
@@ -276,7 +285,7 @@ def RP4(t):
         res = sum(term * rocs) / sum(map(abs, term))
     return res
     
-def sharpe2(rps):
+def sharpe_fast(rps):
     return -np.mean(rps) / np.std(rps)
     
 #Utility
@@ -336,15 +345,18 @@ def IND(t, j):
     return indicator
 
 if __name__ == '__main__':
-    parameters = [10,2,3,4,5,6,7,8,1,2,3,4]
-    #st = time.time(); s = sharpe(parameters); end = time.time(); print(end - st)
+    #parameters = [10,2,3,4,5,6,7,8,1,2,3,4]
+    #params = [-0.11812008, -3.05744312,  3.798748,   -2.05990281,  0.39163579,  3.8577401,\
+              #-4.32966829, -3.93373867, -0.46817134, -2.17563513,  2.48775916,  2.48504554]   
+
+    st = time.time(); s = sharpe3(params); end = time.time(); print(end - st)
     #mnROO = [np.mean([ROO(t,j) for j in rd.stock_dict]) for t in range(rd.T)]
     #mnRCC = [np.mean([RCC(t,j) for j in rd.stock_dict]) for t in range(rd.T)]
     #mnROC = [np.mean([ROC(t,j) for j in rd.stock_dict]) for t in range(rd.T)]
     #mnRCO = [np.mean([RCO(t,j) for j in rd.stock_dict]) for t in range(rd.T)]
-    
-    rp4s = [RP4(t) for t in range(11, rd.T)]
     sys.exit()
+    rp4s = [RP4(t) for t in range(11, rd.T)]
+    
     i10 = {}
     cd = {}
     j = 's6'
