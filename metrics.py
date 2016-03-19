@@ -47,7 +47,7 @@ def RP1(t):
 def RCO(t, j):
     '''Return close-to-open return of stock j on day t'''
     if (t, j) in RCOd: return RCOd[(t, j)]
-    res = (SO(t, j) / float(SC(t, j))) - 1
+    res = (SO(t, j) / SC(t - 1, j)) - 1
     RCOd[(t, j)] = res
     return res
 
@@ -137,9 +137,9 @@ def W2p(t, j):
     terms = [0, 0, 0]
     rcc = (RCC(t-1,j) - AvrRCC(t-1))
     roo = (ROO(t,j) - AvrROO(t))
-    roc = (ROC(t-1,j) - AvrROC(t-1))
+    #roc = (ROC(t-1,j) - AvrROC(t-1))
     rco = (RCO(t,j) - AvrRCO(t))
-    r_avg = (rcc + roo + roc + rco) / 4
+    r_avg = (rcc + roo + rco) / 3
     terms[0] = r_avg
     terms[1] = relative_tvl * r_avg
     terms[2] = relative_rvp * r_avg
@@ -149,7 +149,7 @@ def W2p(t, j):
     return terms
 
 def W2_wrapper(t,j, parameters):
-    terms = W2(t, j)
+    terms = W2p(t, j)
     product = parameters * terms
     return np.sum(product)    
 
@@ -251,5 +251,9 @@ def IND(t, j):
     return indicator
 
 if __name__ == '__main__':
-    parameters = [1,1,1,1,1,1,1,1,1,1,1,1]
+    parameters = [10,2,3,4,5,6,7,8,1,2,3,4]
     st = time.time(); s = sharpe(parameters); end = time.time(); print(end - st)
+    mnROO = [np.mean([ROO(t,j) for j in rd.stock_dict]) for t in range(rd.T)]
+    mnRCC = [np.mean([RCC(t,j) for j in rd.stock_dict]) for t in range(rd.T)]
+    mnROC = [np.mean([ROC(t,j) for j in rd.stock_dict]) for t in range(rd.T)]
+    mnRCO = [np.mean([RCO(t,j) for j in rd.stock_dict]) for t in range(rd.T)]
