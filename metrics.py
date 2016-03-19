@@ -47,7 +47,7 @@ def RP1(t):
 def RCO(t, j):
     '''Return close-to-open return of stock j on day t'''
     if (t, j) in RCOd: return RCOd[(t, j)]
-    res = (SO(t, j) / float(SC(t, j))) - 1
+    res = (SO(t, j) / float(SC(t - 1, j))) - 1
     RCOd[(t, j)] = res
     return res
 
@@ -251,4 +251,9 @@ def IND(t, j):
     return indicator
 
 if __name__ == '__main__':
-    st = time.time(); sharpe(parameters); end = time.time(); print(end - st)
+    parameters = [10,2,3,4,5,6,7,8,1,2,3,4]
+    st = time.time(); s = sharpe(parameters); end = time.time(); print(end - st)
+    mnROO = [np.mean([ROO(t,j) for j in rd.stock_dict]) for t in range(rd.T)]
+    mnRCC = [np.mean([RCC(t,j) for j in rd.stock_dict]) for t in range(rd.T)]
+    mnROC = [np.mean([ROC(t,j) for j in rd.stock_dict]) for t in range(rd.T)]
+    mnRCO = [np.mean([RCO(t,j) for j in rd.stock_dict]) for t in range(rd.T)]
