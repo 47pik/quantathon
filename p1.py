@@ -3,30 +3,31 @@ from metrics import *
 import time
 import sys
 import matplotlib.pyplot as plt
-
+import output as op
+import observations as ob
 
 if __name__ == '__main__':
-    ret_pf = [0, 0]
-    st = time.time()
-    for t in range(2, rd.T):
-        rp = RP1(t)
-        ret_pf.append(rp)
-    
-    plt.plot(ret_pf)
-    plt.show()
-    
-    cumR = []
-    rp2 = [x + 1 for x in ret_pf]
-    for t in range(2, rd.T):    
-        cumR.append(np.log(np.prod(rp2[2: t + 1])))
-    
-    eqLO = []
-    rccs = [np.mean([RCC(t, j) for j in rd.stock_dict]) + 1 for t in range(rd.T)]
-    for t in range(rd.T):
-        eqLO.append(np.log(np.prod(rccs[2: t + 1])))
-        
-    #write csv
-    w = csv.writer('p1.csv')
-        
-        
 
+    #generate time series
+    ts_ret = ob.ts_return(RP1) 
+    ts_cum_ret = ob.ts_cum_return(RP1)
+    ts_mean_abs_w = ob.ts_mean_abs_weight(W1)
+    ts_port_dir = ob.ts_portfolio_dir(W1)
+    
+    #generate data_matrix for output
+    data_matrix = []
+    for t in range(0, rd.T):
+        row = []
+        row.append(rd.date_dict[t])
+        row.append(ts_ret[t])
+        row.append(ts_cum_ret[t])
+        row.append(ts_mean_abs_w[t])
+        row.append(ts_port_dir[t])
+        if t >= 2:
+            row += [W1(t, j) for j in rd.stock_dict]
+        else:
+            row += [99 for j in rd.stock_dict]
+        map(str, row)
+        data_matrix.append(row)
+        
+    op.generate_csv('data_part1.team_B.csv', data_matrix)

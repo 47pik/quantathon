@@ -45,7 +45,10 @@ def get_data():
         stock_name = 's' + str(i)
         stock_table = dat[:,[-1] + range(i * 6 + 1, i * 6 + 6 + 1)].copy()
         stock_dict[stock_name] = stock_table
-        
-    return dat, stock_dict
+    
+    date_dict = {}
+    for i in range(T):
+        date_dict[i] = dat[i,0]
+    return dat, stock_dict, date_dict
 
-dat, stock_dict = get_data()
+dat, stock_dict, date_dict = get_data()
