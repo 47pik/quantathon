@@ -14,6 +14,17 @@ if __name__ == '__main__':
     ts_mean_abs_w = ob.ts_mean_abs_weight(W1)
     ts_port_dir = ob.ts_portfolio_dir(W1)
     
+    f, axarr = plt.subplots(4, sharex=True)
+    axarr[0].plot(range(2, rd.T), ts_ret[2:])
+    axarr[0].set_title('Long-short return')
+    axarr[1].plot(range(2, rd.T), ts_cum_ret[2:])
+    axarr[1].set_title('Cumulative long-short return')
+    axarr[2].plot(range(2, rd.T), ts_mean_abs_w[2:])
+    axarr[2].set_title('Mean absolute weight')
+    axarr[3].plot(range(2, rd.T), ts_port_dir[2:])
+    axarr[3].set_title('Portfolio direction')
+    plt.show()
+
     #generate data_matrix for output
     data_matrix = []
     for t in range(0, rd.T):
