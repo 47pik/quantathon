@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import output as op
 import observations as ob
+from metrics import *
 
 if __name__ == '__main__':
 
@@ -31,7 +32,7 @@ if __name__ == '__main__':
         row.append(ts_mean_abs_w[t])
         row.append(ts_port_dir[t])
         if t >= 2:
-            row += [W1(t, j) for j in rd.stock_dict]
+            row += [W1(t, 's' + str(i)) for i in range(0, rd.N)]
         else:
             row += [99 for j in rd.stock_dict]
         map(str, row)
