@@ -2,9 +2,10 @@ import numpy as np
 import read_data as rd
 
 #Caches
-SOd = {}; SHd = {}; SLd = {}; SCd = {}; TVLd = {}; INDd = {}
+SOd = {}; SHd = {}; SLd = {}; SCd = {}; TVLd = {}; AvrTVLd = {}; INDd = {}
 W1d = {}; AvrRCCd = {}; RCCd = {}; RP1d = {}
 W2d = {}; RCOd = {}; ROCd = {}; ROOd = {}; RVP = {}; RP2d = {}
+AvrRCOd = {}; AvrROCd= {}; AvrROOd = {}; AvrRVPd = {}
 W3d = {}; FILL3d = {};  RP3d = {}
 W4d = {}; FILL4d = {}; RP4d = {}
 
@@ -49,6 +50,13 @@ def RCO(t, j):
     RCOd[(t, j)] = res
     return res
 
+def AvrRCO(t):
+    '''Return average close-to-open return of all stocks on day t'''
+    if t in AvrRCOd: return AvrRCOd[t]
+    res = np.mean([RCO(t, j) for j in rd.stock_dict])
+    AvrRCOd[t] = res
+    return res    
+
 def ROC(t, j):
     '''Return open-to-close return of stock j on day t'''
     if (t, j) in ROCd: return ROCd[(t, j)]
@@ -56,11 +64,25 @@ def ROC(t, j):
     ROCd[(t, j)] = res
     return res
 
+def AvrROC(t):
+    '''Return average open-to-close return of all stocks on day t'''
+    if t in AvrROCd: return AvrROCd[t]
+    res = np.mean([ROC(t, j) for j in rd.stock_dict])
+    AvrROCd[t] = res
+    return res  
+
 def ROO(t, j):
     '''Return open-to-open return of stock j on day t'''
     if (t, j) in ROOd: return ROOd[(t, j)]
     res = (SO(t, j) / float(SO(t, j))) - 1
     ROOd[(t, j)] = res
+    return res
+
+def AvrROO(t):
+    '''Return average open-to-open return of all stocks on day t'''
+    if t in AvrROOd: return AvrROOd[t]
+    res = np.mean([ROO(t, j) for j in rd.stock_dict])
+    AvrROOd[t] = res
     return res
 
 def RVP(t, j):
@@ -70,13 +92,44 @@ def RVP(t, j):
     RVPd[(t, j)] = res
     return res
 
+def AvrRVP(t, j):
+    '''Return average RVP for stock j for 200 days prior to day t'''
+    if (t, j) in AvrRVPd: return AvrRVPd[(t, j)]
+    res = np.mean([RVP(t, j) for t in range(max(1, t-200), t+1)])
+    AvrRVPd[(t, j)] = res
+    return res    
+
 def W2(t, j):
     '''Returns weights for stock j on day t for Part 2'''
-    pass
+    paramters = np.array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
+    n = float(N)
+    relative_tvl = TVL(t-1,j) / float(AvrTVL(t-1,j))
+    relative_rvp = RVP(t-1,j) / float(AvrRVP(t-1,j))
+    
+    terms = []
+    terms.append((RCC(t-1,j) - AvrRCC(t-1)) / n)
+    terms.append((ROO(t,j) - AvrROO(t)) / n)
+    terms.append((ROC(t-1,j) - AvrROC(t-1)) / n)
+    terms.append((RCO(t,j) - AvrRCO(t)) / n)
+    terms.append(relative_tvl * (RCC(t-1,j) - AvrRCC(t-1)) / n)
+    terms.append(relative_tvl * (ROO(t,j) - AvrROO(t)) / n)
+    terms.append(relative_tvl * (ROC(t-1,j) - AvrROC(t-1)) / n)
+    terms.append(relative_tvl * (RCO(t,j) - AvrRCO(t)) / n)
+    terms.append(relative_rvp * (RCC(t-1,j) - AvrRCC(t-1)) / n)
+    terms.append(relative_rvp * (ROO(t,j) - AvrROO(t)) / n)
+    terms.append(relative_rvp * (ROC(t-1,j) - AvrROC(t-1)) / n)
+    terms.append(relative_rvp * (RCO(t,j) - AvrRCO(t)) / n)    
+    terms = np.array(terms)
+    
+    product = paramters * terms
+    return np.sum(product)
 
 def RP2(t):
     '''Returns open-to-close portfolio for day t'''
-    pass
+    
+    res = sum([W2(t, j) * ROC(t, j) for j in rd.stock_dict]) / \
+        sum([abs(W2(t, j)) for j in rd.stock_dict])
+    return res
 
 
 #Part 3
@@ -147,6 +200,13 @@ def TVL(t, j):
     volume = stock_data[t][5]
     TVLd[(t, j)] = volume
     return volume
+
+def AvrTVL(t, j):
+    '''Returns average trading volume for stock j for 200 days prior to day t'''
+    if (t, j) in AvrTVLd: return AvrTVLd[(t, j)]
+    res = np.mean([TVL(t, j) for t in range(max(1, t-200), t+1)])
+    AvrTVLd[(t, j)] = res
+    return res
 
 def IND(t, j):
     '''Returns trade direction indicator of stock j on day t'''
