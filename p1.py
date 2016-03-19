@@ -2,7 +2,7 @@ import numpy as np
 from metrics import *
 import time
 import sys
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 
 if __name__ == '__main__':
@@ -12,8 +12,8 @@ if __name__ == '__main__':
         rp = RP1(t)
         ret_pf.append(rp)
     
-    plt.plot(ret_pf)
-    plt.show()
+    #plt.plot(ret_pf)
+    #plt.show()
     
     cumR = []
     rp2 = [x + 1 for x in ret_pf]
@@ -26,7 +26,7 @@ if __name__ == '__main__':
         eqLO.append(np.log(np.prod(rccs[2: t + 1])))
         
     #write csv
-    w = csv.writer('p1.csv')
+    #w = csv.writer('p1.csv')
         
         
 
