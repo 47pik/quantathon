@@ -8,4 +8,3 @@ if __name__ == '__main__':
     r = scipy.optimize.minimize(f, np.array([0.1, 0.05, -0.1]),\
                                 options={'maxiter':100, 'disp':True})
     
-    
