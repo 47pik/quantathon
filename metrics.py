@@ -1,10 +1,11 @@
 import numpy as np
 import read_data as rd
+import time
 
 #Caches
 SOd = {}; SHd = {}; SLd = {}; SCd = {}; TVLd = {}; AvrTVLd = {}; INDd = {}
-W1d = {}; AvrRCCd = {}; RCCd = {}; RP1d = {}
-W2d = {}; RCOd = {}; ROCd = {}; ROOd = {}; RVP = {}; RP2d = {}
+W1d = {}; AvrRCCd = {}; RCCd = {}; RP1d = {};
+W2d = {}; RCOd = {}; ROCd = {}; ROOd = {}; RVPd = {}; RP2d = {}
 AvrRCOd = {}; AvrROCd= {}; AvrROOd = {}; AvrRVPd = {}
 W3d = {}; FILL3d = {};  RP3d = {}
 W4d = {}; FILL4d = {}; RP4d = {}
@@ -12,8 +13,8 @@ W4d = {}; FILL4d = {}; RP4d = {}
 
 #Part 1
 def AvrRCC(t):
-    '''Returns the equal­weighted average close­-to­-close return across all stocks 
-    on day t­'''
+    '''Returns the equalweighted average close-to-close return across all stocks 
+    on day t'''
     if t in AvrRCCd: return AvrRCCd[t]
     res = np.mean([RCC(t, j) for j in rd.stock_dict])
     AvrRCCd[t] = res
@@ -88,7 +89,7 @@ def AvrROO(t):
 def RVP(t, j):
     '''Return range based proxy for variance of stock j on day t'''
     if (t, j) in RVPd: return RVPd[(t, j)]
-    res (1/(float(4*np.log(2))))*((np.log(SH(t, j)) - np.log(SL(t, j)))**2)
+    res = (1/(float(4*np.log(2))))*((np.log(SH(t, j)) - np.log(SL(t, j)))**2)
     RVPd[(t, j)] = res
     return res
 
@@ -101,36 +102,47 @@ def AvrRVP(t, j):
 
 def W2(t, j):
     '''Returns weights for stock j on day t for Part 2'''
-    paramters = np.array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
-    n = float(N)
+    if (t, j) in W2d: return W2d[(t, j)]
+
+    n = float(rd.N)
     relative_tvl = TVL(t-1,j) / float(AvrTVL(t-1,j))
     relative_rvp = RVP(t-1,j) / float(AvrRVP(t-1,j))
     
-    terms = []
-    terms.append((RCC(t-1,j) - AvrRCC(t-1)) / n)
-    terms.append((ROO(t,j) - AvrROO(t)) / n)
-    terms.append((ROC(t-1,j) - AvrROC(t-1)) / n)
-    terms.append((RCO(t,j) - AvrRCO(t)) / n)
-    terms.append(relative_tvl * (RCC(t-1,j) - AvrRCC(t-1)) / n)
-    terms.append(relative_tvl * (ROO(t,j) - AvrROO(t)) / n)
-    terms.append(relative_tvl * (ROC(t-1,j) - AvrROC(t-1)) / n)
-    terms.append(relative_tvl * (RCO(t,j) - AvrRCO(t)) / n)
-    terms.append(relative_rvp * (RCC(t-1,j) - AvrRCC(t-1)) / n)
-    terms.append(relative_rvp * (ROO(t,j) - AvrROO(t)) / n)
-    terms.append(relative_rvp * (ROC(t-1,j) - AvrROC(t-1)) / n)
-    terms.append(relative_rvp * (RCO(t,j) - AvrRCO(t)) / n)    
-    terms = np.array(terms)
+    terms = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    terms[0] = (RCC(t-1,j) - AvrRCC(t-1))
+    terms[1] = (ROO(t,j) - AvrROO(t))
+    terms[2] = (ROC(t-1,j) - AvrROC(t-1))
+    terms[3] = (RCO(t,j) - AvrRCO(t))
+    terms[4] = relative_tvl * terms[0]
+    terms[5] = relative_tvl * terms[1]
+    terms[6] = relative_tvl * terms[2]
+    terms[7] = relative_tvl * terms[3]
+    terms[8] = relative_rvp * terms[0]
+    terms[9] = relative_rvp * terms[1]
+    terms[10] = relative_rvp * terms[2]
+    terms[11] = relative_rvp * terms[3] 
+    terms = np.array([x / n for x in terms])
     
-    product = paramters * terms
-    return np.sum(product)
+    W2d[(t, j)] = terms
+    return terms
 
-def RP2(t):
+def W2_wrapper(t,j, parameters):
+    terms = W2(t, j)
+    product = parameters * terms
+    return np.sum(product)    
+
+def RP2(t, parameters):
     '''Returns open-to-close portfolio for day t'''
-    
-    res = sum([W2(t, j) * ROC(t, j) for j in rd.stock_dict]) / \
-        sum([abs(W2(t, j)) for j in rd.stock_dict])
+    w = [W2_wrapper(t, j, parameters)  for j in rd.stock_dict]
+    rocs = [ROC(t, j) for j in rd.stock_dict]
+    res = np.dot(w, rocs) / sum(map(abs, w))
     return res
 
+def sharpe(parameters):
+    rfn = RP2
+    rps = [rfn(t, parameters) for t in range(2, rd.T)]
+    return np.mean(rps) / np.std(rps)
+    
 
 #Part 3
 def W3(t, j):
