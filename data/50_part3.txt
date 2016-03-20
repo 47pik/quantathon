@@ -1,0 +1,401 @@
+Carters-MacBook-Pro:quantathon cartertinney$ python p3.py
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: 0.049186
+         Iterations: 32
+         Function evaluations: 257
+         Gradient evaluations: 49
+(-0.47028561617026443, -0.4606570815062434, 0.2822303686705133)
+[ -6155.46500104   6926.85577238 -11861.90216511]
+0.0491863749359
+Optimization terminated successfully.
+         Current function value: -0.326705
+         Iterations: 12
+         Function evaluations: 151
+         Gradient evaluations: 30
+(0.20272378743979214, -0.1068982778288774, -0.0516431057660256)
+[-3.56700199  9.26239658 -3.61900305]
+-0.326705251321
+Optimization terminated successfully.
+         Current function value: -0.326705
+         Iterations: 17
+         Function evaluations: 165
+         Gradient evaluations: 33
+(-0.43179031257281586, 0.2981817154602058, -0.04727096784046747)
+[-1.28732133  3.34259134 -1.30598696]
+-0.326705251836
+Optimization terminated successfully.
+         Current function value: -0.326705
+         Iterations: 17
+         Function evaluations: 175
+         Gradient evaluations: 35
+(-0.45959489498930806, -0.08302869508667643, 0.3056536327191607)
+[-1.71456185  4.4522337  -1.73964213]
+-0.326705251092
+Optimization terminated successfully.
+         Current function value: -0.326705
+         Iterations: 13
+         Function evaluations: 70
+         Gradient evaluations: 14
+(0.30053472692236793, 0.014568135184698905, 0.26561086838090375)
+[-0.71401017  1.85158576 -0.72327302]
+-0.326705147117
+Optimization terminated successfully.
+         Current function value: -0.326705
+         Iterations: 14
+         Function evaluations: 85
+         Gradient evaluations: 17
+(0.029733556515785242, -0.12745000015666763, -0.3170973237286967)
+[-1.46594973  3.80083775 -1.48461285]
+-0.326705146153
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -0.326705
+         Iterations: 19
+         Function evaluations: 381
+         Gradient evaluations: 74
+(-0.12915392912920398, -0.02505254322225492, 0.03508047207258502)
+[-0.48135609  1.24986581 -0.48833755]
+-0.326705251848
+Optimization terminated successfully.
+         Current function value: -0.326705
+         Iterations: 20
+         Function evaluations: 205
+         Gradient evaluations: 41
+(0.43551218382480417, 0.1907147453369027, 0.3394936552453124)
+[-1.01934527  2.64677536 -1.034124  ]
+-0.326705251849
+Optimization terminated successfully.
+         Current function value: -0.326705
+         Iterations: 24
+         Function evaluations: 130
+         Gradient evaluations: 26
+(0.4307514434034728, -0.2339604968247777, -0.2972335361287185)
+[ -6.36147505  16.51704944  -6.45334818]
+-0.326705250756
+Optimization terminated successfully.
+         Current function value: -0.326705
+         Iterations: 16
+         Function evaluations: 145
+         Gradient evaluations: 29
+(0.3712255236979467, 0.3808421174766682, 0.44551638208689637)
+[-1.10094906  2.8586515  -1.11690154]
+-0.326705251845
+Optimization terminated successfully.
+         Current function value: -0.326705
+         Iterations: 12
+         Function evaluations: 110
+         Gradient evaluations: 22
+(-0.14666019464964497, -0.0812053816932422, -0.42747770165910504)
+[-0.92723187  2.40769335 -0.94074942]
+-0.326705251555
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -0.326705
+         Iterations: 15
+         Function evaluations: 346
+         Gradient evaluations: 67
+(0.1284011154525293, 0.2963157987070364, 0.20650129762455327)
+[-0.41048346  1.06584017 -0.41643604]
+-0.326705251849
+Optimization terminated successfully.
+         Current function value: -0.326705
+         Iterations: 17
+         Function evaluations: 216
+         Gradient evaluations: 43
+(-0.05550515756982566, 0.041337859389730114, -0.0899240171872926)
+[-1.21515453  3.15520283 -1.23277156]
+-0.326705251844
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -0.326705
+         Iterations: 10
+         Function evaluations: 257
+         Gradient evaluations: 49
+(-0.17172135700385127, 0.4325751568536992, -0.1911687851280146)
+[-0.17268666  0.4483979  -0.17519775]
+-0.326705251766
+Optimization terminated successfully.
+         Current function value: -0.326705
+         Iterations: 24
+         Function evaluations: 145
+         Gradient evaluations: 29
+(-0.0735594080000943, -0.2720885492273576, 0.3176800064669435)
+[ -5.08067913  13.19290477  -5.1546409 ]
+-0.326705251138
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -0.326705
+         Iterations: 9
+         Function evaluations: 192
+         Gradient evaluations: 36
+(-0.05824762818434448, 0.39924832440919145, 0.2652273581495491)
+[-0.2826792   0.73398543 -0.28677461]
+-0.326705251843
+Optimization terminated successfully.
+         Current function value: -0.326705
+         Iterations: 19
+         Function evaluations: 115
+         Gradient evaluations: 23
+(0.2905342327389917, 0.10208223794730176, 0.43671318899500766)
+[-1.72040593  4.4684174  -1.74608364]
+-0.326705246933
+Optimization terminated successfully.
+         Current function value: -0.326705
+         Iterations: 11
+         Function evaluations: 140
+         Gradient evaluations: 28
+(0.3259434076958899, -0.06952776874540523, -0.09538986034327379)
+[-3.06672678  7.9525998  -3.10646766]
+-0.326705147144
+Optimization terminated successfully.
+         Current function value: -0.326705
+         Iterations: 11
+         Function evaluations: 75
+         Gradient evaluations: 15
+(0.2741145527718397, 0.16963308127060384, 0.16681163775986463)
+[-0.55987622  1.45156136 -0.56698362]
+-0.326705146161
+Optimization terminated successfully.
+         Current function value: -0.326705
+         Iterations: 20
+         Function evaluations: 180
+         Gradient evaluations: 36
+(0.22313605089980715, 0.12996428862817366, -0.4450981381697209)
+[-0.70549797  1.83185938 -0.71572846]
+-0.326705251849
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -0.326705
+         Iterations: 14
+         Function evaluations: 336
+         Gradient evaluations: 65
+(-0.2704821528173522, 0.1827422982527448, 0.48004996052508586)
+[-0.62704413  1.62815122 -0.63613775]
+-0.326705251849
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -0.326705
+         Iterations: 13
+         Function evaluations: 350
+         Gradient evaluations: 68
+(-0.12548854360205375, 0.4706064197410593, -0.07543491596446672)
+[-0.16471398  0.42768704 -0.16710194]
+-0.326705251848
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -0.326705
+         Iterations: 14
+         Function evaluations: 326
+         Gradient evaluations: 63
+(0.2840834860117947, 0.31220920570163024, -0.12774542958601842)
+[-0.25125632  0.65239517 -0.25489668]
+-0.326705251843
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -0.260578
+         Iterations: 32
+         Function evaluations: 217
+         Gradient evaluations: 41
+(-0.29354962810173657, -0.34738724960980294, 0.11789390910015196)
+[ -678.17182676  5082.24914295 -3799.66997433]
+-0.260578416172
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -0.326705
+         Iterations: 17
+         Function evaluations: 232
+         Gradient evaluations: 44
+(0.20873066370354687, 0.42185711398065684, -0.42991827384478976)
+[-0.33710452  0.87530489 -0.34199036]
+-0.326705251848
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -0.326705
+         Iterations: 15
+         Function evaluations: 366
+         Gradient evaluations: 71
+(-0.04859652201563902, 0.4376154353330214, 0.4469694527076524)
+[-0.56579637  1.46911659 -0.57400035]
+-0.326705251849
+Optimization terminated successfully.
+         Current function value: -0.326705
+         Iterations: 12
+         Function evaluations: 75
+         Gradient evaluations: 15
+(0.35258850287114407, 0.21300390197787167, 0.16986829214367938)
+[-0.60945405  1.58048726 -0.61738171]
+-0.326705147071
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -0.326705
+         Iterations: 19
+         Function evaluations: 219
+         Gradient evaluations: 42
+(0.45309391244176944, 0.34486025240375673, -0.3841839501021501)
+[-0.49293166  1.27992656 -0.50008435]
+-0.326705251843
+Optimization terminated successfully.
+         Current function value: -0.326705
+         Iterations: 13
+         Function evaluations: 70
+         Gradient evaluations: 14
+(0.22752968516537087, 0.1333902802975253, 0.3585879758179923)
+[-0.77625628  2.01303549 -0.78634465]
+-0.326705147093
+Optimization terminated successfully.
+         Current function value: -0.326705
+         Iterations: 8
+         Function evaluations: 75
+         Gradient evaluations: 15
+(-0.42269323714628904, 0.09136830297397214, -0.03901640657871208)
+[-0.46797219  1.2135175  -0.47402678]
+-0.326705147166
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -0.326705
+         Iterations: 10
+         Function evaluations: 418
+         Gradient evaluations: 81
+(0.0680443166231447, 0.4081666769655722, -0.25056283700649673)
+[-0.18691772  0.48533867 -0.1896265 ]
+-0.326705251847
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -0.326705
+         Iterations: 21
+         Function evaluations: 346
+         Gradient evaluations: 67
+(0.22332381726084227, 0.1368271382672256, 0.42554747145844307)
+[-0.96688142  2.51055167 -0.98090034]
+-0.326705251849
+Optimization terminated successfully.
+         Current function value: -0.326705
+         Iterations: 14
+         Function evaluations: 85
+         Gradient evaluations: 17
+(0.10626488658318489, -0.05213489772222102, 0.3166367031349182)
+[-0.831197    2.15544788 -0.84196443]
+-0.326705147131
+Optimization terminated successfully.
+         Current function value: -0.326705
+         Iterations: 17
+         Function evaluations: 190
+         Gradient evaluations: 38
+(0.05064441820780652, 0.0952232309099249, 0.20510172226650547)
+[-0.34556156  0.89726335 -0.35056951]
+-0.326705251847
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -0.264930
+         Iterations: 31
+         Function evaluations: 237
+         Gradient evaluations: 45
+(-0.4146457425842158, -0.3862413741787366, -0.1683425966908767)
+[ -1579.03186297  12189.13332647  -8980.02949171]
+-0.264930096442
+Optimization terminated successfully.
+         Current function value: -0.326705
+         Iterations: 14
+         Function evaluations: 105
+         Gradient evaluations: 21
+(0.4462832095355701, -0.13143170800753734, 0.036081904275997556)
+[-1.27108911  3.30061902 -1.28963458]
+-0.326705251394
+Optimization terminated successfully.
+         Current function value: -0.284920
+         Iterations: 32
+         Function evaluations: 180
+         Gradient evaluations: 36
+(0.4424480414136506, -0.41462409594464655, -0.38657907310414175)
+[-10980.80687593  36261.34022957 -22125.62300602]
+-0.284920407975
+Optimization terminated successfully.
+         Current function value: -0.326705
+         Iterations: 18
+         Function evaluations: 105
+         Gradient evaluations: 21
+(0.08636178341022804, -0.00014271763751594335, 0.4803288178117706)
+[-1.23491556  3.20654301 -1.25283455]
+-0.326705251774
+Optimization terminated successfully.
+         Current function value: -0.326705
+         Iterations: 8
+         Function evaluations: 65
+         Gradient evaluations: 13
+(-0.2571747204022956, 0.4092886080706104, -0.21431537440356352)
+[-0.23157921  0.60052666 -0.23458053]
+-0.326705147158
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -0.326705
+         Iterations: 15
+         Function evaluations: 316
+         Gradient evaluations: 61
+(-0.056018663516145706, 0.257315359377737, 0.44286137093797395)
+[-0.66614524  1.7296755  -0.67580298]
+-0.326705251849
+Optimization terminated successfully.
+         Current function value: -0.326705
+         Iterations: 21
+         Function evaluations: 125
+         Gradient evaluations: 25
+(0.13312660789984843, -0.19749119555636196, -0.38884688690754066)
+[-3.23006229  8.38817945 -3.27762655]
+-0.326705249971
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -0.326705
+         Iterations: 14
+         Function evaluations: 316
+         Gradient evaluations: 61
+(0.17885991524871403, 0.22174750461452652, -0.12843424003969184)
+[-0.23398452  0.60755171 -0.23737728]
+-0.326705251849
+Optimization terminated successfully.
+         Current function value: -0.326705
+         Iterations: 14
+         Function evaluations: 215
+         Gradient evaluations: 43
+(0.38707761700197074, 0.290486203808367, -0.4244599855587432)
+[-0.78519114  2.03879254 -0.79658207]
+-0.326705251846
+Optimization terminated successfully.
+         Current function value: -0.326705
+         Iterations: 13
+         Function evaluations: 160
+         Gradient evaluations: 32
+(-0.25933282937982316, 0.28804813592574063, 0.35231431214706166)
+[-0.39260369  1.01940582 -0.39829007]
+-0.326705251838
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -0.326705
+         Iterations: 14
+         Function evaluations: 316
+         Gradient evaluations: 61
+(-0.041962539455006054, 0.21344931853938398, 0.3071391354935453)
+[-0.54574339  1.41702723 -0.55363993]
+-0.326705251807
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -0.326705
+         Iterations: 13
+         Function evaluations: 301
+         Gradient evaluations: 58
+(0.13897414043368927, 0.21540822840146412, 0.17872134584069388)
+[-0.36022303  0.93533204 -0.36544318]
+-0.326705251846
+Optimization terminated successfully.
+         Current function value: -0.326705
+         Iterations: 17
+         Function evaluations: 205
+         Gradient evaluations: 41
+(-0.27549669562976653, 0.175206964334086, 0.32600397831221584)
+[-0.3951905   1.02613394 -0.40092346]
+-0.326705251846
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -0.326705
+         Iterations: 15
+         Function evaluations: 332
+         Gradient evaluations: 64
+(-0.4432286658518786, 0.3743202990254122, -0.48674043619890073)
+[-0.32223174  0.83668521 -0.32690047]
+-0.326705251844
+Optimization terminated successfully.
+         Current function value: -0.326705
+         Iterations: 17
+         Function evaluations: 170
+         Gradient evaluations: 34
+(-0.2965318886426467, 0.13817579761306387, -0.041765213278837754)
+[-1.3089764   3.3944245  -1.32597399]
+-0.326705147035
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -0.326705
+         Iterations: 12
+         Function evaluations: 332
+         Gradient evaluations: 64
+(-0.26202851790684767, 0.13707625912828947, -0.4131083841958244)
+[-0.57571313  1.49484897 -0.58404736]
+-0.326705251824

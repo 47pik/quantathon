@@ -1,0 +1,25 @@
+Our optimized 12-parameters are:
+    params = [-0.42061279 -6.82599053  7.45021706  0.01006849  0.07116319 -4.13940625
+  2.80015637  3.4211568  -0.38872686 -5.16622855  5.83560357  6.64666971]
+
+
+Our starting point for these was:
+(-0.095, -0.095, -0.095, -0.095, 0.25, 0.25, 0.25, 0.25, -0.0975, -0.0975, -0.0975, -0.0975)
+
+We set our a1 weights at 2**k, for k = -5...4. The resulting optimizations yielded the following negative Sharpe ratios:
+-0.422362440038
+-0.423444163993
+-0.425463317598
+-0.428959348057 ** WE CHOOSE THIS ONE **
+-0.335846429062
+-0.276810221178
+-0.259334289929
+-0.254272640135
+-0.253150926947
+
+This gives us a 0.428959348057 Sharpe Ratio, which is slightly lower than the Sharpe Ratio obtained from our optimal parameters in part 2. This makes sense, as the added constraints of the indicators restrict the strength of the model. 
+
+Furthermore, we see that the later parameters are the ones that change the most, which also makes sense as the optimal model tries to move away from the previous strategy that is now haltered by the indicators.
+
+The following results is after setting the initial parameters to the optimal ones from the previous step and letting iterations go higher than 100. The Sharpe Ratio with these parameters was .
+

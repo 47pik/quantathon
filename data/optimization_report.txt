@@ -8,7 +8,7 @@ Our starting point for these was:
 We set our a1 weights at 2**k, for k = -5...5. The resulting optimizations yielded the following negative Sharpe ratios:
 -0.437963358277
 -0.440511485353
--0.440950758314
+-0.440950758314 ** WE CHOOSE THIS ONE **
 -0.442166069528
 -0.441332412222
 -0.440420767592
