@@ -25,6 +25,8 @@ def plot_portfolio_dynamics(r_low, r_high, ts_ret, ts_cum_ret, ts_mean_abs_w, ts
     axarr[2].set_title('Mean absolute weight')
     axarr[3].plot(range(r_low, r_high), ts_port_dir[r_low:])
     axarr[3].set_title('Portfolio direction')
+    plt.xlabel('Day t')
+    plt.xlim(2, 1002)
     plt.show()    
 
 def generate_data_matrix(T, N, stock_dict, date_dict, ts_ret, ts_cum_ret, ts_mean_abs_w, ts_port_dir, W_fn, coeffs=None):
