@@ -234,14 +234,15 @@ def W3p_wrapper(t,j, parameters):
     product = parameters * terms
     return np.sum(product)
 
-def FILL3(t, j, parameters):
+def FILL3(t, j, w):
     '''Returns 1 if stock j on day t is able to be filled on according to W3, 0 otherwise'''
-    if (t, j, tuple(parameters)) in FILL3d: return FILL3d[(t, j, tuple(parameters))]
-    if (W3_wrapper(t, j, parameters) * IND(t, j)) >= 0:
+    sgn = np.sign(w)
+    if (t, j, sgn) in FILL3d: return FILL3d[(t, j, sgn)]
+    if (sgn * IND(t, j)) >= 0:
         res = 1
     else:
         res = 0
-    FILL3d[(t, j, tuple(parameters))] = res
+    FILL3d[(t, j, sgn)] = res
     return res
 
 def W3_wrapper(t,j, parameters):
@@ -255,7 +256,13 @@ def RP3(t, parameters):
         w = [W3_wrapper(t, j, parameters) for j in rd.stock_dict]
     else:
         w = [W3p_wrapper(t, j, parameters) for j in rd.stock_dict]
-    fills = [FILL3(t, j, parameters) for j in rd.stock_dict]
+        
+    fills = []
+    i = 0
+    for j in rd.stock_dict:
+        fills.append(FILL3(t, j, w[i]))
+        i+= 1
+    #fills = [FILL3(t, j, w) for j in rd.stock_dict]
     rocs = [ROC(t, j) for j in rd.stock_dict]
     
     term = np.array(w) * np.array(fills)
@@ -332,7 +339,7 @@ def movavg(t, j):
     movavgd[(t, j)] = res
     return res    
 
-def FILL4(t, j):
+def FILL4(t, j, weights=None):
     '''Returns 1 if stock j on day t is able to be filled on according to W4, 0 otherwise'''
     if (t, j) in FILL4d: return FILL4d[(t, j)]
     if (W4(t, j) * IND(t, j)) >= 0:

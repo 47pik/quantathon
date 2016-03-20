@@ -34,7 +34,12 @@ def ts_mean_abs_weight(w_fn, coeffs=None, fill_fn=None):
         weights = np.array([w_fn(*([t, j] + extra_arg)) for j in rd.stock_dict])
         #apply fill fn if given
         if fill_fn:
-            fills = np.array([fill_fn(*[t, j] + extra_arg) for j in rd.stock_dict])
+            fills = []
+            i = 0
+            for j in rd.stock_dict:
+                fills.append(fill_fn(t, j, weights[i]))
+                i += 1            
+            #fills = np.array([fill_fn(t, j, weights) for j in rd.stock_dict])
             weights = weights * fills
         abs_weights = map(abs, weights)
         
@@ -53,7 +58,13 @@ def ts_portfolio_dir(w_fn, coeffs=None, fill_fn=None):
         weights = np.array([w_fn(*([t, j] + extra_arg)) for j in rd.stock_dict])
         #apply fill fn if given
         if fill_fn:
-            fills = np.array([fill_fn(*([t, j] + extra_arg)) for j in rd.stock_dict])
+            fills = []
+            i = 0
+            for j in rd.stock_dict:
+                fills.append(fill_fn(t, j, weights[i]))
+                i += 1
+            
+            #fills = np.array([fill_fn(t, j, weights) for j in rd.stock_dict])
             weights = weights * fills
     
         abs_weights = map(abs, weights)
