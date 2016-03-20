@@ -21,5 +21,6 @@ This gives us a 0.428959348057 Sharpe Ratio, which is slightly lower than the Sh
 
 Furthermore, we see that the later parameters are the ones that change the most, which also makes sense as the optimal model tries to move away from the previous strategy that is now haltered by the indicators.
 
-The following results is after setting the initial parameters to the optimal ones from the previous step and letting iterations go higher than 100. The Sharpe Ratio with these parameters was .
+The following results is after setting the initial parameters to the optimal ones from the previous step and letting iterations go higher than 100. The Sharpe Ratio with these parameters was -0.355221.
 
+^No good
