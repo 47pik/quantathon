@@ -39,8 +39,8 @@ def max_drawdown(ts_cum_ret):
     mdd_peak_i = 2
     mdd_valley = curr_valley
     mdd_valley_i = 2
-    #mdd_mag = 0
-    mdd_percent = 0
+    mdd_mag = 0
+    #mdd_percent = 0
     
     for i in range(2, len(ts_cum_ret)):
         curr = ts_cum_ret[i] + 1
@@ -49,15 +49,15 @@ def max_drawdown(ts_cum_ret):
             curr_valley = curr
             curr_valley_i = i
             
-            #if (curr_peak - curr_valley) > mdd_mag:
-            if (curr_peak - curr_valley) / curr_peak > mdd_percent:
+            if (curr_peak - curr_valley) > mdd_mag:
+            #if (curr_peak - curr_valley) / curr_peak > mdd_percent:
                 mdd_peak = curr_peak
                 mdd_peak_i = curr_peak_i
                 mdd_valley = curr_valley
                 mdd_valley_i = curr_valley_i
                 
-                mdd_percent = (mdd_peak - mdd_valley) / mdd_peak
-                #mdd_mag = mdd_peak - mdd_valley
+                #mdd_percent = (mdd_peak - mdd_valley) / mdd_peak
+                mdd_mag = mdd_peak - mdd_valley
                 
         elif curr > curr_peak:
             curr_peak = curr
@@ -66,8 +66,8 @@ def max_drawdown(ts_cum_ret):
             curr_valley_i = i
     
     duration = mdd_valley_i - mdd_peak_i
-    return (duration, -mdd_percent)
-    #return(duration, -mdd_mag)
+    #return (duration, -mdd_percent)
+    return(duration, -mdd_mag)
     
 def equal_weight_corr(ts_ret, avg_fn):
     '''Return correlation between strategy and equal weight long portfolio'''
