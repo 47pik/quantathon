@@ -181,18 +181,71 @@ def sharpe2(parameters):
 
 #Part 3
 
+def W3(t, j):
+    '''Returns weights for stock j on day t for Part 3'''
+    if (t, j) in W3d: return W3d[(t, j)]
+
+    n = float(rd.N)
+    relative_tvl = TVL(t-1,j) / float(AvrTVL(t-1,j))
+    relative_rvp = RVP(t-1,j) / float(AvrRVP(t-1,j))
+    
+    terms = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    terms[0] = (RCC(t-1,j) - AvrRCC(t-1))
+    terms[1] = (ROO(t,j) - AvrROO(t))
+    terms[2] = (ROC(t-1,j) - AvrROC(t-1))
+    terms[3] = (RCO(t,j) - AvrRCO(t))
+    terms[4] = relative_tvl * terms[0]
+    terms[5] = relative_tvl * terms[1]
+    terms[6] = relative_tvl * terms[2]
+    terms[7] = relative_tvl * terms[3]
+    terms[8] = relative_rvp * terms[0]
+    terms[9] = relative_rvp * terms[1]
+    terms[10] = relative_rvp * terms[2]
+    terms[11] = relative_rvp * terms[3] 
+    terms = np.array([x / n for x in terms])
+    
+    W3d[(t, j)] = terms
+    return terms
+
+def W3p(t, j):
+    '''Returns weights for stock j on day t for Part 3'''
+    if (t, j) in W3d: return W3d[(t, j)]
+
+    n = float(rd.N)
+    relative_tvl = TVL(t-1,j) / float(AvrTVL(t-1,j))
+    relative_rvp = RVP(t-1,j) / float(AvrRVP(t-1,j))
+    
+    terms = [0, 0, 0]
+    rcc = (RCC(t-1,j) - AvrRCC(t-1))
+    roo = (ROO(t,j) - AvrROO(t))
+    roc = (ROC(t-1,j) - AvrROC(t-1))
+    #rco = (RCO(t,j) - AvrRCO(t))
+    r_avg = (rcc + roo + roc) / 3
+    terms[0] = r_avg
+    terms[1] = relative_tvl * r_avg
+    terms[2] = relative_rvp * r_avg
+    terms = np.array([x / n for x in terms])
+    
+    W3d[(t, j)] = terms
+    return terms
+
+def W3p_wrapper(t,j, parameters):
+    terms = W3p(t, j)
+    product = parameters * terms
+    return np.sum(product)
+
 def FILL3(t, j, parameters):
     '''Returns 1 if stock j on day t is able to be filled on according to W3, 0 otherwise'''
-    if (t, j) in FILL3d: return FILL3d[(t, j)]
-    if (W2_wrapper(t, j, parameters) * IND(t, j)) >= 0:
+    if (t, j, tuple(parameters)) in FILL3d: return FILL3d[(t, j, tuple(parameters))]
+    if (W3_wrapper(t, j, parameters) * IND(t, j)) >= 0:
         res = 1
     else:
         res = 0
-    FILL3d[(t, j)] = res
+    FILL3d[(t, j, tuple(parameters))] = res
     return res
 
 def W3_wrapper(t,j, parameters):
-    terms = W2(t, j)
+    terms = W3(t, j)
     product = parameters * terms
     return np.sum(product)  
 
@@ -201,7 +254,7 @@ def RP3(t, parameters):
     if len(parameters) == 12:
         w = [W3_wrapper(t, j, parameters) for j in rd.stock_dict]
     else:
-        w = [W2p_wrapper(t, j, parameters) for j in rd.stock_dict]
+        w = [W3p_wrapper(t, j, parameters) for j in rd.stock_dict]
     fills = [FILL3(t, j, parameters) for j in rd.stock_dict]
     rocs = [ROC(t, j) for j in rd.stock_dict]
     
