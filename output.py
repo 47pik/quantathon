@@ -4,6 +4,7 @@ import deliverable_results as dr
 import matplotlib.pyplot as plt
 
 def print_deliverables(ts_ret, ts_cum_ret, avg_fn):
+    '''Calculate and print values for deliverables'''
     print('Average Daily Log Returns: ' + str(dr.avg_daily_log_ret(ts_ret)))
     print('Std Dev of Daily Log Returns: ' + str(dr.std_daily_log_ret(ts_ret)))
     print('Annualized Sharpe Ratio: ' + str(dr.annualized_sr(ts_ret)))
@@ -14,6 +15,7 @@ def print_deliverables(ts_ret, ts_cum_ret, avg_fn):
     print('Equal Weight Correlation: ' + str(dr.equal_weight_corr(ts_ret, avg_fn)))    
 
 def plot_portfolio_dynamics(r_low, r_high, ts_ret, ts_cum_ret, ts_mean_abs_w, ts_port_dir):
+    '''Plot data for deliverables'''
     f, axarr = plt.subplots(4, sharex=True)
     axarr[0].plot(range(r_low, r_high), ts_ret[r_low:])
     axarr[0].set_title('Long-short return')
@@ -25,7 +27,8 @@ def plot_portfolio_dynamics(r_low, r_high, ts_ret, ts_cum_ret, ts_mean_abs_w, ts
     axarr[3].set_title('Portfolio direction')
     plt.show()    
 
-def generate_data_matrix(T, N, stock_dict, date_dict, ts_ret, ts_cum_ret, ts_mean_abs_w, ts_port_dir, W_fn):
+def generate_data_matrix(T, N, stock_dict, date_dict, ts_ret, ts_cum_ret, ts_mean_abs_w, ts_port_dir, W_fn, coeffs=None):
+    '''Generate a matrix of data to be exported as CSV'''
     data_matrix = []
     for t in range(0, T):
         row = []
@@ -35,7 +38,10 @@ def generate_data_matrix(T, N, stock_dict, date_dict, ts_ret, ts_cum_ret, ts_mea
         row.append(ts_mean_abs_w[t])
         row.append(ts_port_dir[t])
         if t >= 2:
-            row += [W_fn(t, 's' + str(i)) for i in range(0, N)]
+            if coeffs:
+                row += [W_fn(t, 's' + str(i), coeffs) for i in range(0, N)]
+            else:
+                row += [W_fn(t, 's' + str(i)) for i in range(0, N)]
         else:
             row += [99 for j in stock_dict]
         map(str, row)
@@ -43,10 +49,17 @@ def generate_data_matrix(T, N, stock_dict, date_dict, ts_ret, ts_cum_ret, ts_mea
     return data_matrix
     
 def generate_csv_data(filename, data_matrix):
+    '''Output a matrix of data as a csv'''
     with open(os.path.join('deliverables', filename), 'wb+') as csvfile:
         writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
         header = ['yyyymmdd', 'return', 'cumulative_return', 'mean_abs_weight', 'portfolio_direction']
         stocks = ['Stock_' + str(i) for i in range(0, 100)]
         writer.writerow(header + stocks)
         writer.writerows(data_matrix)
-        
+
+def generate_csv_coeff(filename, coeff_names, coeff_vals):
+    '''Output a series of coefficients as a csv'''
+    with open(os.path.join('deliverables', filename), 'wb+') as csvfile:
+        writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        writer.writerow(coeff_names)
+        writer.writerow(coeff_vals)   

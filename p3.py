@@ -1,50 +1,31 @@
-import numpy as np
+import output as op
+import observations as ob
 from metrics import *
-import random
-import scipy.optimize
-import sys
 
 if __name__ == '__main__':
-    f = sharpe3
-    sh_dic = {}
-    ##optimize for 3 weights
-    #for i in range(50):
-        #params = [random.uniform(-0.5, 0.5) for i in range(3)]
-        #r = scipy.optimize.minimize(f, np.array(params),
-                                    #options={'maxiter':100, 'disp':True})
-        #print(str(tuple(params)))
-        #print(r.x)
-        #print(r.fun)
-        #sh_dic[i] = [tuple(params), r.x, r.fun]
-    
-    #if there's a pattern, try a few of that pattern
-    for pw in range(-5, 4):
-        print(pw)
-        #pattern is probably not this!!!!
-        b = (2 ** pw)
-        a = b * (-0.38)
-        c = b * (-0.39)
-        params = [a,a,a,a,b,b,b,b,c,c,c,c]
-        r = scipy.optimize.minimize(f, np.array(params),
-                                    options={'maxiter':100, 'disp':True})
-        print(str(tuple(params)))
-        print(r.x)
-        print(r.fun)
-        sh_dic[pw] = [tuple(params), r.x, r.fun]
-        
-    #explore deeper using your favourite 12 weight combo
 
-    #optimal from part 2 (ish)
-    #params = [-0.11812008, -3.05744312,  3.798748,   -2.05990281,  0.39163579,  3.8577401,\
-              #-4.32966829, -3.93373867, -0.46817134, -2.17563513,  2.48775916,  2.48504554]
-    #r = scipy.optimize.minimize(f, np.array(params),\
-    #                                       options={'maxiter':1000, 'disp':True})    
-    #print(r.x)
-    #print(r.fun)
-    #print(str(tuple(params)))
+    #define params
+    param_names = ['b1', 'b2', 'b3', 'b4', 'b5', 'b6', 'b7', 'b8', 'b9', 'b10', 'b11', 'b12']
+    param_vals = [-1.25,-1.25,1.25,1.25,-1.85,-1.85,-1.85,-1.85,0.11,0.11,0.11,0.11]
+
+    #generate time series      
+    ts_ret = ob.ts_return(RP3, coeffs=param_vals) 
+    ts_cum_ret = ob.ts_cum_return(RP3, coeffs=param_vals)
+    ts_mean_abs_w = ob.ts_mean_abs_weight(W3_wrapper, coeffs=param_vals, fill_fn = FILL3)
+    ts_port_dir = ob.ts_portfolio_dir(W3_wrapper, coeffs=param_vals, fill_fn= FILL3)
     
-    
-    #RESULTS:
-    # params = [-0.42061279 -6.82599053  7.45021706  0.01006849  0.07116319 -4.13940625
-  2.80015637  3.4211568  -0.38872686 -5.16622855  5.83560357  6.64666971]
-    
+    #generate deliverable results
+    op.print_deliverables(ts_ret, ts_cum_ret, AvrROC)
+
+    #plot data
+    op.plot_portfolio_dynamics(2, rd.T, ts_ret, ts_cum_ret, ts_mean_abs_w, ts_port_dir)
+
+    #generate data_matrix for output
+    data_matrix = op.generate_data_matrix(rd.T, rd.N, rd.stock_dict, \
+                rd.date_dict, ts_ret, ts_cum_ret, ts_mean_abs_w, ts_port_dir, W3_wrapper, coeffs=param_vals)
+        
+    #output data to CSV
+    op.generate_csv_data('data_part3.team_B.csv', data_matrix)
+
+    #output coefficients to CSV
+    op.generate_csv_coeff('coeff_part3.team_B.csv', param_names, param_vals)

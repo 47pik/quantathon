@@ -191,10 +191,15 @@ def FILL3(t, j, parameters):
     FILL3d[(t, j)] = res
     return res
 
+def W3_wrapper(t,j, parameters):
+    terms = W2(t, j)
+    product = parameters * terms
+    return np.sum(product)  
+
 def RP3(t, parameters):
     '''Returns open-to-close portfolio for day t taking fill conditions into account'''
     if len(parameters) == 12:
-        w = [W2_wrapper(t, j, parameters) for j in rd.stock_dict]
+        w = [W3_wrapper(t, j, parameters) for j in rd.stock_dict]
     else:
         w = [W2p_wrapper(t, j, parameters) for j in rd.stock_dict]
     fills = [FILL3(t, j, parameters) for j in rd.stock_dict]
@@ -236,13 +241,15 @@ def ret10(t, j):
     return res
 
 def ressup(t, j):
-    alpha = 0.01; beta = 1
+    alpha_high = 0.01 #selling
+    alpha_low = 0.0615 #buying
+    beta = 1
     if (t, j) in ressupd: return ressupd[(t, j)]
     L = low(t, j); H = high(t, j)
     pr = SO(t, j)
-    if pr < ((1 + alpha) * L):
+    if pr < ((1 + alpha_low) * L):
         res = beta
-    elif pr > ((1 - alpha) * H):
+    elif pr > ((1 - alpha_high) * H):
         res = -beta
     else:
         res = 0
@@ -251,7 +258,7 @@ def ressup(t, j):
     
 def low(t, j):
     if (t, j) in lowd: return lowd[(t, j)]
-    L = min([SL(i, j) for i in range(max(1, t-200), t+1)])
+    L = min([SL(i, j) for i in range(max(1, t-20), t+1)]) #orig said t-200
     lowd[(t, j)] = L
     return L
     
@@ -356,45 +363,46 @@ def IND(t, j):
     return indicator
 
 if __name__ == '__main__':
-    #parameters = [10,2,3,4,5,6,7,8,1,2,3,4]
-    params = [-0.11812008, -3.05744312,  3.798748,   -2.05990281,  0.39163579,  3.8577401,\
-              -4.32966829, -3.93373867, -0.46817134, -2.17563513,  2.48775916,  2.48504554]   
+    pass
+    ##parameters = [10,2,3,4,5,6,7,8,1,2,3,4]
+    #params = [-0.11812008, -3.05744312,  3.798748,   -2.05990281,  0.39163579,  3.8577401,\
+              #-4.32966829, -3.93373867, -0.46817134, -2.17563513,  2.48775916,  2.48504554]   
 
-    st = time.time(); s = sharpe3(params); end = time.time(); print(end - st)
-    #mnROO = [np.mean([ROO(t,j) for j in rd.stock_dict]) for t in range(rd.T)]
-    #mnRCC = [np.mean([RCC(t,j) for j in rd.stock_dict]) for t in range(rd.T)]
-    #mnROC = [np.mean([ROC(t,j) for j in rd.stock_dict]) for t in range(rd.T)]
-    #mnRCO = [np.mean([RCO(t,j) for j in rd.stock_dict]) for t in range(rd.T)]
-    sys.exit()
-    rp4s = [RP4(t) for t in range(11, rd.T)]
+    #st = time.time(); s = sharpe3(params); end = time.time(); print(end - st)
+    ##mnROO = [np.mean([ROO(t,j) for j in rd.stock_dict]) for t in range(rd.T)]
+    ##mnRCC = [np.mean([RCC(t,j) for j in rd.stock_dict]) for t in range(rd.T)]
+    ##mnROC = [np.mean([ROC(t,j) for j in rd.stock_dict]) for t in range(rd.T)]
+    ##mnRCO = [np.mean([RCO(t,j) for j in rd.stock_dict]) for t in range(rd.T)]
+    #sys.exit()
+    #rp4s = [RP4(t) for t in range(11, rd.T)]
     
-    i10 = {}
-    cd = {}
-    j = 's6'
-    for j in rd.stock_dict:
-        #r10 = [ret10(t, j) for t in range(11, rd.T)]
-        ind = np.reshape(rd.stock_dict[j][:,6], (1003, 1))
-        #ind10 = ind[11:,:]
-        #pos10i = filter(lambda i: r10[i] > 0, range(rd.T - 11))
-        #pos10 = [int(ind10[i]) for i in pos10i]
-        ##print(Counter(pos10))
-        #neg10i = filter(lambda i: r10[i] < 0, range(rd.T - 11))
-        #neg10 = [int(ind10[i]) for i in neg10i]
-        ##print(Counter(neg10))  
-        #i10[j] = (Counter(pos10), Counter(neg10))
-        roc = np.reshape(np.array([ROC(t, j) for t in range(rd.T)]), (1003, 1))
-        #l = lm.LinearRegression()
-        #l.fit(roc, ind)
-        x = ss.linregress(np.transpose(roc)[0], np.transpose(ind)[0])
+    #i10 = {}
+    #cd = {}
+    #j = 's6'
+    #for j in rd.stock_dict:
+        ##r10 = [ret10(t, j) for t in range(11, rd.T)]
+        #ind = np.reshape(rd.stock_dict[j][:,6], (1003, 1))
+        ##ind10 = ind[11:,:]
+        ##pos10i = filter(lambda i: r10[i] > 0, range(rd.T - 11))
+        ##pos10 = [int(ind10[i]) for i in pos10i]
+        ###print(Counter(pos10))
+        ##neg10i = filter(lambda i: r10[i] < 0, range(rd.T - 11))
+        ##neg10 = [int(ind10[i]) for i in neg10i]
+        ###print(Counter(neg10))  
+        ##i10[j] = (Counter(pos10), Counter(neg10))
+        #roc = np.reshape(np.array([ROC(t, j) for t in range(rd.T)]), (1003, 1))
+        ##l = lm.LinearRegression()
+        ##l.fit(roc, ind)
+        #x = ss.linregress(np.transpose(roc)[0], np.transpose(ind)[0])
               
-        cd[j] = x
+        #cd[j] = x
         
-        coefs = [cd[j].slope for j in cd]
-        errs = [cd[j].stderr for j in cd]
-        np.median(coefs)
-        np.median(errs)
-        pv = [cd[j].pvalue for j in cd]
-        np.median(pv)        
-        pvi = [(i, pv[i]) for i in range(100)]
-        spvi = sorted(pvi, key=lambda x:x[1]) 
-        sigcoefs = [[x[0], x[1], coefs[x[0]]] for x in spvi[:23]]
+        #coefs = [cd[j].slope for j in cd]
+        #errs = [cd[j].stderr for j in cd]
+        #np.median(coefs)
+        #np.median(errs)
+        #pv = [cd[j].pvalue for j in cd]
+        #np.median(pv)        
+        #pvi = [(i, pv[i]) for i in range(100)]
+        #spvi = sorted(pvi, key=lambda x:x[1]) 
+        #sigcoefs = [[x[0], x[1], coefs[x[0]]] for x in spvi[:23]]
